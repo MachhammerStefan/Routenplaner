@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1590396638 source:c:\users\felix\desktop\routenplaner 0.2.2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+
+1590393038 source:c:\users\peter\dropbox\pad2 - projekt - routenplaner (1)\routenplaner 0.3.0\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+
+1590389438 source:c:\fh\bmr2\pad 2\projekt - peter,felix\routenplaner 0.3.0\routenplaner 0.3.0\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+
