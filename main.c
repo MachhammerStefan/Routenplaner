@@ -3,6 +3,8 @@
 #include <string.h>
 #include <math.h>
 
+//TEST FÜR GIT
+
 typedef struct Citys
 {
     char* city;             //0
@@ -642,6 +644,8 @@ int main()
             printf("Ein Fehler ist aufgetreten, bitte starten Sie das Programm neu!\n");
             break;
         }
+        //Test für GIT
+
 
     }
     return 0;
