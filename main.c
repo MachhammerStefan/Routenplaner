@@ -54,6 +54,38 @@ double distance(double lon1, double lon2, double lat1, double lat2) //Berechnung
 
 }
 
+double betterDistance(double lon1, double lon2, double lat1, double lat2)
+{
+    double dx;
+    double dy;
+    double distance;
+    double lat;
+
+
+
+    //mit distance: Entfernung in km
+    lat = (lat1 + lat2) / 2 * 0.01745;
+    dx = 111.3 * cos(lat) * (lon1 - lon2);
+    dy = 111.3 * (lat1 - lat2);
+    //lat1, lat2, lon1, lon2: Breite, Länge in Grad
+    distance = sqrt(dx * dx + dy * dy);
+    return distance;
+}
+
+double exactDistance(double lon1, double lon2, double lat1, double lat2)
+{
+    double distance;
+    lon1 = lon1 * 3.14 /180;
+    lon2 = lon2 * 3.14 /180;
+    lat1 = lat1 * 3.14 /180;
+    lat2 = lat2 * 3.14 /180;
+
+    distance = 6378.388 * (acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1)));
+
+   //mit dist: Entfernung in km
+    return distance;
+}
+
 void printOneCity(struct Citys* p) //Ausgabe einer Stadt mit ihren Daten
 {
     if(p != NULL)
@@ -421,11 +453,15 @@ void printReverse(struct Citys* head)
         printf("City: %s\n", p->city_ascii);
         if(p->before != NULL)
         {
-            printf("Distance Between: %.2f km\n",distance(p->lng,p->before->lng, p->lat, p->before->lat));
+            printf("Distance Between:        %.2f km\n",distance(p->lng,p->before->lng, p->lat, p->before->lat));
+            printf("Better Distance Between: %.2f km\n",betterDistance(p->lng,p->before->lng, p->lat, p->before->lat));
+            printf("Exact Distance Between:  %.2f km\n",exactDistance(p->lng,p->before->lng, p->lat, p->before->lat));
         }
         else
         {
-            printf("Distance Between: %.2f km\nCity: %s\n",distance(p->lng,last->lng, p->lat, last->lat), last->city_ascii);
+            printf("Distance Between:        %.2f km\n",distance(p->lng,last->lng, p->lat, last->lat));
+            printf("Better Distance Between: %.2f km\n",betterDistance(p->lng,last->lng, p->lat, last->lat));
+            printf("Exact Distance Between:  %.2f km\nCity: %s\n", exactDistance(p->lng,last->lng, p->lat, last->lat), last->city_ascii);
         }
     }
     printf("\n");
@@ -487,7 +523,8 @@ struct Citys* nearestNeigborsAlgorithm(struct Citys* head)
         {
             //printOneCity(p_head);
             //printOneCity(one);
-            distance1 = distance(p_head->lng, lon2 = one->lng, lat1 = p_head->lat,lat2 = one->lat);
+            distance1 = exactDistance(p_head->lng, lon2 = one->lng, lat1 = p_head->lat,lat2 = one->lat);
+
             //printf("\nDistanc: %f <> Nearest: %f\n", distance1, nearestDistance);
 
             if(distance1 < nearestDistance)
