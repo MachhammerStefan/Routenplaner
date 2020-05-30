@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1590834761 source:c:\fh\bmr2\pad2\routenplaner\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+

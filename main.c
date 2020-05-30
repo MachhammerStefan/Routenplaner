@@ -20,9 +20,9 @@ typedef struct Citys
     struct Citys* before;   //12
 } Citys;
 
-void print(struct Citys* head)  //Ãœbergabe der head = Anfang der Liste
+void print(struct Citys* head)  //Übergabe der head = Anfang der Liste
 {
-    struct Citys *p;  //ZusÃ¤tzliches Struct fÃ¼r die Ausgabe
+    struct Citys *p;  //Zusätzliches Struct für die Ausgabe
     if(head ==NULL)   //Wenn nur eine leere Liste vorhanden ist
     {
         printf("list empty\n");
@@ -37,16 +37,16 @@ void print(struct Citys* head)  //Ãœbergabe der head = Anfang der Liste
     printf("\n");
 }
 
-double distance(double lon1, double lon2, double lat1, double lat2) //Berechnung der Distanz (Luftlinie) Ã¼ber den Pytagoras
+double distance(double lon1, double lon2, double lat1, double lat2) //Berechnung der Distanz (Luftlinie) über den Pytagoras
 {
     //Einfachste Berechnung => leider etwas ungenau!!!!!
     //latitude => Breitengrad in Grad
-    //longitude => LÃ¤ngengrad in Grad
+    //longitude => Längengrad in Grad
     double dx;
     double dy;
     double distance;
 
-    dx = 71.5 * (lon1 - lon2);  //Distanz zwischen den LÃ¤ngengraden mit Umrechnung in Kilometer
+    dx = 71.5 * (lon1 - lon2);  //Distanz zwischen den Längengraden mit Umrechnung in Kilometer
     dy = 111.3 * (lat1 - lat2); //Distanz zwischen den Breitengraden mit Umrechnung in Kilometer
     distance = sqrt(dx * dx + dy * dy); //Anwendung Satz dens Pydagoras => Errechnung der Hypothenuse
 
@@ -68,16 +68,16 @@ void printOneCity(struct Citys* p) //Ausgabe einer Stadt mit ihren Daten
 double changeStringtoDouble(char *ptr)  //Verwandelt einen String mit Zahlen in einen double Wert
 {
     int i = 0;      //counter
-    int counterAfterPoint = 0;  //fÃ¼r die Berechnung der Kommerstelle
+    int counterAfterPoint = 0;  //für die Berechnung der Kommerstelle
     double sign = 1;            //Vorzeichen 1 pos, -1 neg
     double stelle = 10;         //zum Verschieben der 10er-Stellen der Zahl
-    int returnValue = 0;        //Ergebnis und RÃ¼ckgabewert
+    int returnValue = 0;        //Ergebnis und Rückgabewert
 
-    int lenghtString = strlen(ptr); //LÃ¤nge des Strings = Anzahl der Stellen der Zahl
+    int lenghtString = strlen(ptr); //Länge des Strings = Anzahl der Stellen der Zahl
     char in[lenghtString];          //zu bearbeitender String
-    strncpy(in, ptr, lenghtString); //Kopieren des Inhaltes des Ãœbergegebene Strings
+    strncpy(in, ptr, lenghtString); //Kopieren des Inhaltes des Übergegebene Strings
 
-    if(in[0] == '-')    //ÃœberprÃ¼fen ob die Zahl negativ oder Positiv ist!
+    if(in[0] == '-')    //Überprüfen ob die Zahl negativ oder Positiv ist!
     {
         sign = -1;
         i++;
@@ -87,7 +87,7 @@ double changeStringtoDouble(char *ptr)  //Verwandelt einen String mit Zahlen in 
     {
         if(in[i] == '.')        //KOMMA!!!
         {
-            counterAfterPoint = 1; //Kommastelle zÃ¤hler wird auf eins erhÃ¶ht
+            counterAfterPoint = 1; //Kommastelle zähler wird auf eins erhöht
         }
         else if(in[i] == '0')
         {
@@ -135,11 +135,11 @@ double changeStringtoDouble(char *ptr)  //Verwandelt einen String mit Zahlen in 
             printf("Fehler2!\n");
         }
 
-        if(counterAfterPoint > 0)  //erhÃ¶hen der Kommastelle, wenn es bereits eine gibt
+        if(counterAfterPoint > 0)  //erhöhen der Kommastelle, wenn es bereits eine gibt
         {
             counterAfterPoint++;
         }
-        i++;        //erhÃ¶hen des ZÃ¤hlers der Zehnerstelle
+        i++;        //erhöhen des Zählers der Zehnerstelle
     }
     return returnValue * sign / (pow(10.0, counterAfterPoint-2));  //erechnen des Werte, Vorzeichen, Kommastellen
 }
@@ -157,13 +157,13 @@ char* myStrDup(const char* str)
 }
 
 struct Citys* addFront(struct Citys* head, char *city, char* city_ascii, double lat, double lng,
-                       char* country, double population, char* capital)    //Am Anfang der Liste einfÃ¼gen + Ãœbergeben der verwendeten Parameter der einzelnen StÃ¤dte
+                       char* country, double population, char* capital)    //Am Anfang der Liste einfügen + Übergeben der verwendeten Parameter der einzelnen Städte
 {
     struct Citys* newCitys = malloc(sizeof(struct Citys)); //freien Speicher anfordern
     if(newCitys == NULL)
-        return NULL;   //Bei Fehler wird Null zurÃ¼ckgegeben
+        return NULL;   //Bei Fehler wird Null zurückgegeben
 
-    newCitys->city = myStrDup(city);    //Ãœbergeben der einzelnen Paramter an die Struct
+    newCitys->city = myStrDup(city);    //Übergeben der einzelnen Paramter an die Struct
     newCitys->city_ascii = myStrDup(city_ascii);
     newCitys->lat = lat;
     newCitys->lng = lng;
@@ -171,26 +171,26 @@ struct Citys* addFront(struct Citys* head, char *city, char* city_ascii, double 
     newCitys->popolation = population;
     newCitys->capital = myStrDup(capital);
 
-    newCitys->next = head;  //die head-Strcut wird auf die zweite Position in der Liste verschoben (Adresse wird Ã¼brgeben)
+    newCitys->next = head;  //die head-Strcut wird auf die zweite Position in der Liste verschoben (Adresse wird übrgeben)
     newCitys->before = NULL;    //vor der ersten Struct in Liste ist keine Struct mehr => deswegen NULL
 
     if(head != NULL)
-        head->before = newCitys; //Wenn head nicht NULL ist, dann wird der Head-Struct die Adresse der jetzt ersten Struct Ã¼bergeben
+        head->before = newCitys; //Wenn head nicht NULL ist, dann wird der Head-Struct die Adresse der jetzt ersten Struct übergeben
 
 
     head = newCitys;    //die neue Struct City wird zu head...erste Stelle der Liste
-    return head;        //ZurÃ¼ckgegeben wird die head!!!
+    return head;        //Zurückgegeben wird die head!!!
 }
 
 struct Citys* addBack(struct Citys* head, char *city, char* city_ascii, double lat, double lng,
-                      char* country,double population, char* capital)    //Am Ende der Liste einfÃ¼gen + Ãœbergeben der verwendeten Parameter der einzelnen StÃ¤dte
+                      char* country,double population, char* capital)    //Am Ende der Liste einfügen + Übergeben der verwendeten Parameter der einzelnen Städte
 {
     struct Citys* newCitys = malloc(sizeof(struct Citys)); //freien Speicher anfordern
     if(newCitys == NULL)
-        return NULL;   //Bei Fehler wird Null zurÃ¼ckgegeben
+        return NULL;   //Bei Fehler wird Null zurückgegeben
 
     struct Citys *p;
-    newCitys->city = myStrDup(city);    //Ãœbergeben der einzelnen Paramter an die Struct
+    newCitys->city = myStrDup(city);    //Übergeben der einzelnen Paramter an die Struct
     newCitys->city_ascii = myStrDup(city_ascii);
     newCitys->lat = lat;
     newCitys->lng = lng;
@@ -206,10 +206,10 @@ struct Citys* addBack(struct Citys* head, char *city, char* city_ascii, double l
     }
 
     for (p=head; p->next !=NULL; p = p->next) ;         //durch gehen der Liste bis zum letzten Struct
-    p->next= newCitys;                                  //Struct wird hinten angehÃ¤ngt (mittels Adresse)
-    p->next->before = p;                                //zurÃ¼ck verlinkung der Struct
+    p->next= newCitys;                                  //Struct wird hinten angehängt (mittels Adresse)
+    p->next->before = p;                                //zurück verlinkung der Struct
 
-    return head;        //ZurÃ¼ckgegeben wird die head!!!
+    return head;        //Zurückgegeben wird die head!!!
 }
 
 struct Citys* openFile(struct Citys* head)
@@ -218,7 +218,7 @@ struct Citys* openFile(struct Citys* head)
     char delimiter[] = ",\"";
 
     FILE *Myfile= NULL;
-    Myfile = fopen("worldcities.csv","r"); //Ã¶ffnen nur mit Leserechten
+    Myfile = fopen("worldcities.csv","r"); //öffnen nur mit Leserechten
 
     if (NULL==Myfile)
     {
@@ -239,7 +239,7 @@ struct Citys* openFile(struct Citys* head)
         {
             ptr = strtok(temp, delimiter);
 
-            while(ptr != NULL)      //DurchzÃ¤hlen und zuordnen der einzelnen Werte aus der Datei
+            while(ptr != NULL)      //Durchzählen und zuordnen der einzelnen Werte aus der Datei
             {
                 if(i == 0)
                 {
@@ -327,7 +327,7 @@ char* inStr()
 
 struct Citys* newList(struct Citys* head, struct Citys* headNewList)
 {
-    printf("\nNeue StÃ¤dteliste: \nGeben Sie bitte die Namen ein. Zum Beenden - eingeben!\n");
+    printf("\nNeue Städteliste: \nGeben Sie bitte die Namen ein. Zum Beenden - eingeben!\n");
     int counter = 0;
     char* inputName;
     struct Citys* p = NULL;
@@ -346,7 +346,7 @@ struct Citys* newList(struct Citys* head, struct Citys* headNewList)
         }
         else
         {
-            //doppelte Eingabe muss noch ÃœberprÃ¼ft werden!!!!!!!!!!!!!
+            //doppelte Eingabe muss noch Überprüft werden!!!!!!!!!!!!!
             if(existCity(headNewList, inputName) == 1)
             {
                 printf("Die Stadt %s ist bereits in der Liste vorhanden!\n");
@@ -471,7 +471,7 @@ struct Citys* nearestNeigborsAlgorithm(struct Citys* head)
     struct Citys* p_head = NULL;
     p_head = addFront(p_head, "Vienna", "Vienna", 48.2, 16.3666, "Austria", 1897491 , "primary"); //Neue List
     struct Citys* one = NULL; //Suchen
-    struct Citys* nearest = NULL; //NÃ¤hestes
+    struct Citys* nearest = NULL; //Nähestes
     double distance1;
     double nearestDistance = 99999999999999;  // auf dobuble max wert umschreiben
     double dx;
@@ -580,20 +580,18 @@ void sortbypopulation(struct Citys *data, struct Citys *newdata)
 
 }
 
-
-
 //felix code end
 
 int main()
 {
-    int select;  //Auswahl Variable fÃ¼r das MenÃ¼
+    int select;  //Auswahl Variable für das Menü
     int endProg = 0;        // Das Program wird solange Wiederholt bis diese Variable auf 1 gesetzt wird
     struct Citys* head = NULL;  //Erste Struct/Stadt der Liste => aus CSV-Datei
-    struct Citys* headNewList = NULL;       // head einer Neu erstellten Liste (Zum Suchen, AuswÃ¤hlen und Berechnen)
+    struct Citys* headNewList = NULL;       // head einer Neu erstellten Liste (Zum Suchen, Auswählen und Berechnen)
     //head = addBack(head, "test", "test2", 22.2, 11.1, "test3", "test4");
-    head = openFile(head);  //Ã¶ffnen und einlesen der  CSV-Datei
+    head = openFile(head);  //öffnen und einlesen der  CSV-Datei
     printf("Ihre Daten wurden geladen.\n");
-    while(endProg != 1)         //MenÃ¼
+    while(endProg != 1)         //Menü
     {
 
         printf("Bitte waehlen Sie eine Zahl fuer Ihre Aktion aus:\n");
@@ -607,14 +605,14 @@ int main()
         scanf("%d", &select); //Eingabe auf der Konsole zur Auswahl
         getchar(); //Damit fegts funktionert, ansonsten wird ein leere String eingelesen
 
-        switch(select)      //Auswahl der zuverfÃ¼gung stehendne Programme
+        switch(select)      //Auswahl der zuverfügung stehendne Programme
         {
         case 0:             // Das Program wird beendet
             printf("Programm wird geschlossen. ShutDown!\n");
             endProg = 1;     // setzten der Variable, zum Unterbrechen der while-Schleife
             break;
         case 1:
-            print(head);     //Asugabe aller in der Liste vorhanden Daten/StÃ¤dte
+            print(head);     //Asugabe aller in der Liste vorhanden Daten/Städte
             break;
         case 2:
             printf("Bitte geben Sie den Namen der Stadt ein: ");
@@ -627,13 +625,13 @@ int main()
             sortbypopulation(head, headNewList);
             break;
         case 5:
-            head = addCityConsol(head); //EinfÃ¼gen einer neuen Stadt, am anfang der Liste
+            head = addCityConsol(head); //Einfügen einer neuen Stadt, am anfang der Liste
             break;
         case 6:
-            headNewList = newList(head, headNewList);  //Neue Liste mit ausgewÃ¤hlten StÃ¤dten wird erstellt
-            print(headNewList);                         //Ausgabe aller in der Liste vorhanden Daten/StÃ¤dte
-            headNewList = nearestNeigborsAlgorithm(headNewList);    //gibt eine List zurÃ¼ck mit den Eingegebenen StÃ¤dten und dem AusgangsPunkt, hier Vienna
-            printReverse(headNewList);  //Die zurÃ¼ckgegebne List ist nach dem LAST-IN-FIRST-OUT Prinzip, deswegen muss die Liste umgedreht werden
+            headNewList = newList(head, headNewList);  //Neue Liste mit ausgewählten Städten wird erstellt
+            print(headNewList);                         //Ausgabe aller in der Liste vorhanden Daten/Städte
+            headNewList = nearestNeigborsAlgorithm(headNewList);    //gibt eine List zurück mit den Eingegebenen Städten und dem AusgangsPunkt, hier Vienna
+            printReverse(headNewList);  //Die zurückgegebne List ist nach dem LAST-IN-FIRST-OUT Prinzip, deswegen muss die Liste umgedreht werden
             free(headNewList); //Die neu erstellte Liste wird nach deren Verwendung wieder freigegeben
             headNewList = NULL;
             break;
