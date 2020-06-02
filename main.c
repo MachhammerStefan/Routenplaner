@@ -97,7 +97,7 @@ void printOneCity(struct Citys* p) //Ausgabe einer Stadt mit ihren Daten
 }
 
 
-double changeStringtoDouble(char *ptr)  //Verwandelt einen String mit Zahlen in einen double Wert
+double changeStringtoDouble(char *ptr, char* ascii)  //Verwandelt einen String mit Zahlen in einen double Wert
 {
     int i = 0;      //counter
     int counterAfterPoint = 0;  //für die Berechnung der Kommerstelle
@@ -163,8 +163,9 @@ double changeStringtoDouble(char *ptr)  //Verwandelt einen String mit Zahlen in 
         }
         else
         {
-            printf("%c\n", in[i]);
-            printf("Fehler2 - Zahl (String) kann nicht umgewandelt werden! (in Double)\n");
+            printf("%s\n", ptr);
+            printf("Fehler - Uwandlung der Zahl nicht moeglich! Stadt: %s\n", ascii);
+            return -1;
         }
 
         if(counterAfterPoint > 0)  //erhöhen der Kommastelle, wenn es bereits eine gibt
@@ -283,11 +284,11 @@ struct Citys* openFile(struct Citys* head)
                 }
                 else if(i == 2)
                 {
-                    one.lat = changeStringtoDouble(ptr);
+                    one.lat = changeStringtoDouble(ptr, one.city_ascii);
                 }
                 else if(i == 3)
                 {
-                    one.lng = changeStringtoDouble(ptr);
+                    one.lng = changeStringtoDouble(ptr, one.city_ascii);
                 }
                 else if(i == 4)
                 {
@@ -299,7 +300,7 @@ struct Citys* openFile(struct Citys* head)
                 }
                 else if(i == 9)
                 {
-                    one.popolation = changeStringtoDouble(ptr)/100;
+                    one.popolation = changeStringtoDouble(ptr, one.city_ascii)/100;
                 }
                 i++;
                 ptr = strtok(NULL, delimiter);
