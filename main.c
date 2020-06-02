@@ -617,8 +617,69 @@ void sortbypopulation(struct Citys *data, struct Citys *newdata)
 
 //felix code end
 
+
+void createtxt(struct Citys* head)
+{
+    FILE* outputfile;
+    outputfile = fopen("Route.txt","w"); // Datei neu erzeugen bzw. ueberschreiben, wenn es sie schon gibt
+
+    struct Citys *p;
+    struct Citys *last;
+    if(head ==NULL)
+    {
+        printf("Fehler, .txt konnte nicht erstellt werden, da die Liste leer ist!\n");
+        return;
+    }
+
+    for(p = head; p != NULL; p = p->next)
+    {
+        last = p;
+    }
+    for(p = last; p != NULL; p = p->before)
+    {
+        fprintf(outputfile,"City: %s\n", p->city_ascii);
+        if(p->before != NULL)
+        {
+            fprintf(outputfile,"Distance Between: %.2f km\n",distance(p->lng,p->before->lng, p->lat, p->before->lat));
+        }
+        else
+        {
+            fprintf(outputfile,"Distance Between: %.2f km\nCity: %s\n",distance(p->lng,last->lng, p->lat, last->lat), last->city_ascii);
+        }
+    }
+    fclose(outputfile); // Datei schließen
+    printf(" \n//////////////////////////\n");
+    printf(".txt erfolgreich erstellt!\n");
+    printf("//////////////////////////\n\n");
+
+}
+
+void createcsv(struct Citys* head)  //Übergabe der head = Anfang der Liste
+{
+
+    FILE* outputfile;
+    outputfile = fopen("worldcitiesnew.csv","w"); // Datei neu erzeugen bzw. ueberschreiben, wenn es sie schon gibt
+
+    struct Citys *p;  //Zusätzliches Struct für die Ausgabe
+    if(head == NULL)   //Wenn nur eine leere Liste vorhanden ist
+    {
+        fprintf(outputfile,"list empty\n");
+        return;
+    }
+    fprintf(outputfile,"city,\"city_ascii\",\"lat\",\"lng\",\"country\",\"iso2\",\"iso3\",\"admin_name\",\"capital\",\"population\",\"id\"\n");
+    for(p = head; p != NULL; p = p->next)  //Abarbeitung der einzelnen structs von head bis zum Ende => p==NULL
+    {
+        fprintf(outputfile,"\"%s\",\"%s\",\"%f\",\"%f\",\"%s\",\"\",\"\",\"\",\"%s\",\"%f\",\"\"\n", p->city, p->city_ascii, p->lat, p->lng, p->country, p->capital,p->popolation);
+    }
+    fclose(outputfile);
+    printf(" \n////////////////////////////////////\n");
+    printf("Neue csv Datei erfolgreich erstellt!\n");
+    printf("////////////////////////////////////\n\n");
+}
+
 int main()
 {
+    char answer;
     int select;  //Auswahl Variable für das Menü
     int endProg = 0;        // Das Program wird solange Wiederholt bis diese Variable auf 1 gesetzt wird
     struct Citys* head = NULL;  //Erste Struct/Stadt der Liste => aus CSV-Datei
@@ -643,7 +704,15 @@ int main()
         switch(select)      //Auswahl der zuverfügung stehendne Programme
         {
         case 0:             // Das Program wird beendet
+            printf("Sollen die Staedte als neue csv Datei gespeichert werden? (y/n) ");
+            scanf("%c",&answer);
+            if(answer == 'y')
+            {
+                createcsv(head);
+                answer = 'x';
+            }
             printf("Programm wird geschlossen. ShutDown!\n");
+
             endProg = 1;     // setzten der Variable, zum Unterbrechen der while-Schleife
             break;
         case 1:
@@ -667,14 +736,23 @@ int main()
             print(headNewList);                         //Ausgabe aller in der Liste vorhanden Daten/Städte
             headNewList = nearestNeigborsAlgorithm(headNewList);    //gibt eine List zurück mit den Eingegebenen Städten und dem AusgangsPunkt, hier Vienna
             printReverse(headNewList);  //Die zurückgegebne List ist nach dem LAST-IN-FIRST-OUT Prinzip, deswegen muss die Liste umgedreht werden
+            printf("Soll die Route als .txt gespeichert werden? (y/n) ");
+            scanf("%c",&answer);
+            if(answer == 'y')
+            {
+                createtxt(headNewList);
+                answer = 'x';
+            }
+
             free(headNewList); //Die neu erstellte Liste wird nach deren Verwendung wieder freigegeben
             headNewList = NULL;
             break;
-        default:
+            default:
             printf("Ein Fehler ist aufgetreten, bitte starten Sie das Programm neu!\n");
             break;
         }
 
     }
+    free(head);
     return 0;
 }
