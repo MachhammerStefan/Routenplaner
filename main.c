@@ -82,7 +82,7 @@ double exactDistance(double lon1, double lon2, double lat1, double lat2)
 
     distance = 6378.388 * (acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1)));
     // 6378.388 = Erdradius => damit km
-   //mit dist: Entfernung in km
+    //mit dist: Entfernung in km
     return distance;
 }
 
@@ -308,7 +308,7 @@ struct Citys* openFile(struct Citys* head)
         }
         if(count != 1)
         {
-            head = addFront(head, one.city, one.city_ascii, one.lat, one.lng, one.country,one.popolation ,one.capital);
+            head = addFront(head, one.city, one.city_ascii, one.lat, one.lng, one.country,one.popolation,one.capital);
 
             i = 0;
         }
@@ -386,7 +386,8 @@ struct Citys* newList(struct Citys* head, struct Citys* headNewList)        //er
                 printf("Bitte geben Sie den Namen einer anderen Stadt ein!\n");
             }
             else
-            {   //Stadt wird zur Liste hinzugefügt
+            {
+                //Stadt wird zur Liste hinzugefügt
                 headNewList = addFront(headNewList, p->city, p->city_ascii, p->lat, p->lng, p->country,p->popolation, p->capital);
                 counter++;
             }
@@ -428,8 +429,9 @@ struct Citys* addCityConsol(struct Citys* head)     //zusätzliche Eingabe einer 
         printf("Die Stadt %s ist bereits in der Liste vorhanden!\n");
     }
     else
-    {   //Hinzufügen der Stadt zu Liste
-        head = addFront(head, one.city, one.city_ascii, one.lat, one.lng, one.country,one.popolation ,one.capital);
+    {
+        //Hinzufügen der Stadt zu Liste
+        head = addFront(head, one.city, one.city_ascii, one.lat, one.lng, one.country,one.popolation,one.capital);
     }
 
     return head;
@@ -509,7 +511,7 @@ struct Citys* nearestNeigborsAlgorithm(struct Citys* head)      //Nearest-Neighb
     //Beginn: Ausgangsstadt => nähesten nächste Stadt = nächstes Ziel => dieses Zeil wird zum Ausgangspunkt
     //Wenn alle Städte asugewählt wurden => zurück zur Ausgangsstadt
     struct Citys* p_head = NULL; //Neu Liste zum Sortiern
-    p_head = addFront(p_head, "Vienna", "Vienna", 48.2, 16.3666, "Austria", 1897491 , "primary"); //Erster Eintrag in der neuen List = Ausgangsstadt
+    p_head = addFront(p_head, "Vienna", "Vienna", 48.2, 16.3666, "Austria", 1897491, "primary");  //Erster Eintrag in der neuen List = Ausgangsstadt
     struct Citys* one = NULL; //Suchen/Durchgehen der Städte
     struct Citys* nearest = NULL; //Nähestes - zum zwischen Speichern
     double distance1; //Entfernug zwischen zwei Städten
@@ -612,7 +614,7 @@ void sortbypopulation(struct Citys *data, struct Citys *newdata)
             }
         }
     }
-   printallsorted(newdata);
+    printallsorted(newdata);
 
 }
 
@@ -734,7 +736,7 @@ int main()
             break;
         case 6:
             headNewList = newList(head, headNewList);  //Neue Liste mit ausgewählten Städten wird erstellt
-            print(headNewList);                         //Ausgabe aller in der Liste vorhanden Daten/Städte
+            //print(headNewList);                         //Ausgabe aller in der Liste vorhanden Daten/Städte
             headNewList = nearestNeigborsAlgorithm(headNewList);    //gibt eine List zurück mit den Eingegebenen Städten und dem AusgangsPunkt, hier Vienna
             printReverse(headNewList);  //Die zurückgegebne List ist nach dem LAST-IN-FIRST-OUT Prinzip, deswegen muss die Liste umgedreht werden
             printf("Soll die Route als .txt gespeichert werden? (y/n) ");
@@ -748,7 +750,7 @@ int main()
             free(headNewList); //Die neu erstellte Liste wird nach deren Verwendung wieder freigegeben
             headNewList = NULL;
             break;
-            default:
+        default:
             printf("Ein Fehler ist aufgetreten, bitte starten Sie das Programm neu!\n");
             break;
         }
