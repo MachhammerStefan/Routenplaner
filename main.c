@@ -20,7 +20,7 @@ typedef struct Citys
     struct Citys* before;   //12
 } Citys;
 
-void printCities(struct Citys* head);
+void print(struct Citys* head);
 double distance(double lon1, double lon2, double lat1, double lat2);
 double betterDistance(double lon1, double lon2, double lat1, double lat2);
 double exactDistance(double lon1, double lon2, double lat1, double lat2);
@@ -82,7 +82,7 @@ double distance(double lon1, double lon2, double lat1, double lat2) //Berechnung
 
 }
 
-double betterDistance(double lon1, double lon2, double lat1, double lat2)
+double betterDistance(double lon1, double lon2, double lat1, double lat2) //Berechnung der Distanz (Luftlinie) über den Pytagoras und cos()
 {
     //https://www.kompf.de/gps/distcalc.html
 
@@ -99,7 +99,7 @@ double betterDistance(double lon1, double lon2, double lat1, double lat2)
     return distance;
 }
 
-double exactDistance(double lon1, double lon2, double lat1, double lat2)
+double exactDistance(double lon1, double lon2, double lat1, double lat2) //Exakte Entfernungsberechnung für die Kugeloberfläche
 {
     //Seitenkosinussatz
     double distance;
@@ -110,7 +110,7 @@ double exactDistance(double lon1, double lon2, double lat1, double lat2)
 
     distance = 6378.388 * (acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1)));
     // 6378.388 = Erdradius => damit km
-    //mit dist: Entfernung in km
+    //mit Entfernung in km
     return distance;
 }
 
@@ -118,12 +118,11 @@ void printOneCity(struct Citys* p) //Ausgabe einer Stadt mit ihren Daten
 {
     if(p != NULL)
     {
+        //Ausgabe der Daten
         printf("city: %s\nascii: %s\nlat: %f\nlng: %f\ncountry: %s\ncapital: %s\npopulation: %f\nbefore: %p current: %p next: %p\n", p->city, p->city_ascii, p->lat, p->lng, p->country, p->capital,p->popolation, p->before, p, p->next);
         printf("\n");
     }
-
 }
-
 
 double changeStringtoDouble(char *ptr, char* ascii)  //Verwandelt einen String mit Zahlen in einen double Wert
 {
@@ -237,7 +236,6 @@ struct Citys* addFront(struct Citys* head, char *city, char* city_ascii, double 
 
     if(head != NULL)
         head->before = newCitys; //Wenn head nicht NULL ist, dann wird der Head-Struct die Adresse der jetzt ersten Struct übergeben
-
 
     head = newCitys;    //die neue Struct City wird zu head...erste Stelle der Liste
     return head;        //Zurückgegeben wird die head!!!
@@ -750,7 +748,6 @@ void createtxt(struct Citys* head)
 
 void createcsv(struct Citys* head)  //Übergabe der head = Anfang der Liste
 {
-
     FILE* outputfile;
     outputfile = fopen("worldcitiesnew.csv","w"); // Datei neu erzeugen bzw. ueberschreiben, wenn es sie schon gibt
 
