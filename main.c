@@ -59,7 +59,7 @@ void print(struct Citys* head)  //Übergabe der head = Anfang der Liste
 
     for(p = head; p != NULL; p = p->next)  //Abarbeitung der einzelnen structs von head bis zum Ende => p==NULL
     {
-        printf("city: %s\nascii: %s\nlat: %f\nlng: %f\ncountry: %s\ncapital: %s\npopulation: %f\nbefore: %p current: %p next: %p\n", p->city, p->city_ascii, p->lat, p->lng, p->country, p->capital,p->popolation, p->before, p, p->next);
+        printf("city: %s\nlat: %f\nlng: %f\ncountry: %s\ncapital: %s\npopulation: %.2f\n", p->city_ascii, p->lat, p->lng, p->country, p->capital,p->popolation);
         printf("\n");
     }
     printf("\n");
@@ -119,7 +119,7 @@ void printOneCity(struct Citys* p) //Ausgabe einer Stadt mit ihren Daten
     if(p != NULL)
     {
         //Ausgabe der Daten
-        printf("city: %s\nascii: %s\nlat: %f\nlng: %f\ncountry: %s\ncapital: %s\npopulation: %f\nbefore: %p current: %p next: %p\n", p->city, p->city_ascii, p->lat, p->lng, p->country, p->capital,p->popolation, p->before, p, p->next);
+        printf("city: %s\nlat: %f\nlng: %f\ncountry: %s\ncapital: %s\npopulation: %.2f\n", p->city_ascii, p->lat, p->lng, p->country, p->capital,p->popolation);
         printf("\n");
     }
 }
@@ -274,76 +274,76 @@ struct Citys* addBack(struct Citys* head, char *city, char* city_ascii, double l
 struct Citys* openFile(struct Citys* head)
 {
     char *ptr;
-    char delimiter[] = ",\"";
+    char delimiter[] = "\""; // Zeichen festelegen, nach denen der eingelesene String aus der csv datei zerlegt werden soll
 
     FILE *Myfile= NULL;
     Myfile = fopen("worldcities.csv","r"); //öffnen nur mit Leserechten
 
-    if (NULL==Myfile)
+    if (NULL==Myfile) //Fehlermeldung, falls csv nicht geöffnet werden kann
     {
         printf("ERROR: Could not open the.csv file!");
         exit(-1);
     }
-    printf("Die Daten werden geladen....\n");
+    printf("Die Daten werden geladen....\n"); // ausgebe an den user, dass die Daten geladen werden
     int i = 0;
     int count = 0;
     char temp [1024];
     do
     {
         struct Citys one;
-        fgets(temp, 1024, (FILE*)Myfile);
+        fgets(temp, 1024, (FILE*)Myfile); //einlesen der Daten aus der csv datei
         count++;
 
         if(count != 1)
         {
-            ptr = strtok(temp, delimiter);
+            ptr = strtok(temp, delimiter); // zerlegen des Strings in einzelstrings, duch selektieren nach zuvor festgelegten zeichen (delimeter)
 
-            while(ptr != NULL)      //Durchzählen und zuordnen der einzelnen Werte aus der Datei
+
+            while(ptr != NULL)      //Durchzählen und zuordnen der einzelnen Werte aus der Datei und in struct speichern
             {
                 if(i == 0)
                 {
-                    one.city = ptr;
+                    one.city = ptr; //stadt speichern
                 }
                 else if(i == 1)
                 {
-                    one.city_ascii = ptr;
-                }
-                else if(i == 2)
-                {
-                    one.lat = changeStringtoDouble(ptr, one.city_ascii);
+                    one.city_ascii = ptr;//stadt in ascii speichern
                 }
                 else if(i == 3)
                 {
-                    one.lng = changeStringtoDouble(ptr, one.city_ascii);
+                    one.lat = changeStringtoDouble(ptr, one.city_ascii); //längengrad speichern
                 }
-                else if(i == 4)
+                else if(i == 5)
                 {
-                    one.country = ptr;
+                    one.lng = changeStringtoDouble(ptr, one.city_ascii);//breitengrad Speichern
                 }
-                else if(i == 8)
+                else if(i == 7)
                 {
-                    one.capital = ptr;          //Funkt no ned ganz!!!!!!!!!!!!!!!!!!!!!!!!
+                    one.country = ptr; //land speichern
                 }
-                else if(i == 9)
+                else if(i == 15)
                 {
-                    one.popolation = changeStringtoDouble(ptr, one.city_ascii)/100;
+                    one.capital = ptr;   //hauptstadt speichern
+                }
+                else if(i == 17)
+                {
+                    one.popolation = changeStringtoDouble(ptr, one.city_ascii); //einwohner speichern
                 }
                 i++;
-                ptr = strtok(NULL, delimiter);
+                ptr = strtok(NULL, delimiter);//prt zurücksetzen
             }
         }
         if(count != 1)
         {
-            head = addFront(head, one.city, one.city_ascii, one.lat, one.lng, one.country,one.popolation,one.capital);
+            head = addFront(head, one.city, one.city_ascii, one.lat, one.lng, one.country,one.popolation,one.capital); //Speichern der Daten
 
             i = 0;
         }
 
-    }
-    while((getc(Myfile))!=EOF);
+    }while((getc(Myfile))!=EOF); //ausführen solnage nicht das ende des Files erreicht wurde.
 
-    fclose(Myfile);
-    return head;
+    fclose(Myfile);//csv datei nach erfolgreichem Einlesen wieder schließen
+    return head;//head zurückgeben
 }
 
 struct Citys* searchCity(struct Citys* head, char cityName[100])  //Suchen nach einer Stadt - mithilfe ASCII
@@ -571,18 +571,22 @@ struct Citys* nearestNeigborsAlgorithm(struct Citys* head)      //Nearest-Neighb
 
 void printallsorted(struct Citys * data)
 {
+    printf("city:                    lat:      lng:        country:              capital:    population: \n");
     for (struct Citys *i = data; i != NULL; i = i->next)
     {
-        printf("%20s    %15.f\n", i->city_ascii, i->popolation);
+        //printf("%20s    %15.f\n", i->city_ascii, i->popolation);
+        printf("%20s  %10.4f  %10.4f  %20s  %10s  %15.2f\n", i->city_ascii, i->lat, i->lng, i->country, i->capital,i->popolation);
     }
 
 }
 
 void printsortedbyname(struct Citys * data)
 {
+    printf("city:                    lat:      lng:        country:              capital:    population: \n");
     for (struct Citys *i = data; i != NULL; i = i->next)
     {
-        printf("%20s\n", i->city_ascii);
+        //printf("%20s\n", i->city_ascii);
+        printf("%20s  %10.4f  %10.4f  %20s  %10s  %15.2f\n", i->city_ascii, i->lat, i->lng, i->country, i->capital,i->popolation);
     }
 
 }
@@ -710,14 +714,14 @@ void sortbypopulation(struct Citys *data, struct Citys *newdata)
 //felix code end
 
 
-void createtxt(struct Citys* head)
+void createtxt(struct Citys* head)//Übergabe des head = Anfang der Liste
 {
     FILE* outputfile;
     outputfile = fopen("Route.txt","w"); // Datei neu erzeugen bzw. ueberschreiben, wenn es sie schon gibt
 
     struct Citys *p;
     struct Citys *last;
-    if(head ==NULL)
+    if(head ==NULL) //wenn Liste leer ist fehler ausgeben
     {
         printf("Fehler, .txt konnte nicht erstellt werden, da die Liste leer ist!\n");
         return;
@@ -727,26 +731,26 @@ void createtxt(struct Citys* head)
     {
         last = p;
     }
-    for(p = last; p != NULL; p = p->before)
+    for(p = last; p != NULL; p = p->before) //Liste der berechneten Route der Reihe nach von hinten durchgehen
     {
-        fprintf(outputfile,"City: %s\n", p->city_ascii);
+        fprintf(outputfile,"City: %s\n", p->city_ascii); //ausgabe der Stadt
         if(p->before != NULL)
         {
-            fprintf(outputfile,"Distance Between: %.2f km\n",distance(p->lng,p->before->lng, p->lat, p->before->lat));
+            fprintf(outputfile,"Distance Between: %.2f km\n",distance(p->lng,p->before->lng, p->lat, p->before->lat)); //Ausgabe der Distanz der ersten Stadt
         }
         else
         {
-            fprintf(outputfile,"Distance Between: %.2f km\nCity: %s\n",distance(p->lng,last->lng, p->lat, last->lat), last->city_ascii);
+            fprintf(outputfile,"Distance Between: %.2f km\nCity: %s\n",distance(p->lng,last->lng, p->lat, last->lat), last->city_ascii); //ausgabe der berechneten distanz und stadt von hinten nach vorne
         }
     }
     fclose(outputfile); // Datei schließen
-    printf(" \n//////////////////////////\n");
+    printf(" \n//////////////////////////\n"); //bestätigung für user das .txt erstellt wurde
     printf(".txt erfolgreich erstellt!\n");
     printf("//////////////////////////\n\n");
 
 }
 
-void createcsv(struct Citys* head)  //Übergabe der head = Anfang der Liste
+void createcsv(struct Citys* head)  //Übergabe des head = Anfang der Liste
 {
     FILE* outputfile;
     outputfile = fopen("worldcitiesnew.csv","w"); // Datei neu erzeugen bzw. ueberschreiben, wenn es sie schon gibt
@@ -754,16 +758,16 @@ void createcsv(struct Citys* head)  //Übergabe der head = Anfang der Liste
     struct Citys *p;  //Zusätzliches Struct für die Ausgabe
     if(head == NULL)   //Wenn nur eine leere Liste vorhanden ist
     {
-        fprintf(outputfile,"list empty\n");
+        fprintf(outputfile,"list empty\n"); //Fehlermeldung, dass Liste leer ist
         return;
     }
-    fprintf(outputfile,"city,\"city_ascii\",\"lat\",\"lng\",\"country\",\"iso2\",\"iso3\",\"admin_name\",\"capital\",\"population\",\"id\"\n");
+    fprintf(outputfile,"city,\"city_ascii\",\"lat\",\"lng\",\"country\",\"iso2\",\"iso3\",\"admin_name\",\"capital\",\"population\",\"id\"\n"); //Legende in erste Zeile der csv Datei schreiben
     for(p = head; p != NULL; p = p->next)  //Abarbeitung der einzelnen structs von head bis zum Ende => p==NULL
     {
-        fprintf(outputfile,"\"%s\",\"%s\",\"%f\",\"%f\",\"%s\",\"\",\"\",\"\",\"%s\",\"%f\",\"\"\n", p->city, p->city_ascii, p->lat, p->lng, p->country, p->capital,p->popolation);
+        fprintf(outputfile,"\"%s\",\"%s\",\"%f\",\"%f\",\"%s\",\"\",\"\",\"\",\"%s\",\"%f\",\"\"\n", p->city, p->city_ascii, p->lat, p->lng, p->country, p->capital,p->popolation);//erstellen der csv Datei, Stadt für Statd
     }
     fclose(outputfile);
-    printf(" \n////////////////////////////////////\n");
+    printf(" \n////////////////////////////////////\n");//bestätigung für user das .csv erstellt wurde
     printf("Neue csv Datei erfolgreich erstellt!\n");
     printf("////////////////////////////////////\n\n");
 }
@@ -795,11 +799,11 @@ int main()
         switch(select)      //Auswahl der zuverfügung stehendne Programme
         {
         case 0:             // Das Program wird beendet
-            printf("Sollen die Staedte als neue csv Datei gespeichert werden? (y/n) ");
+            printf("Sollen die Staedte als neue .csv Datei gespeichert werden? (y/n) ");
             scanf("%c",&answer);
-            if(answer == 'y')
+            if(answer == 'y') //user Abfrage ob neue csv Datei erstellt werden soll
             {
-                createcsv(head);
+                createcsv(head); // head zum erstelen einer neuen csv Datei übergeben
                 answer = 'x';
             }
             printf("Programm wird geschlossen. ShutDown!\n");
@@ -829,9 +833,9 @@ int main()
             printReverse(headNewList);  //Die zurückgegebne List ist nach dem LAST-IN-FIRST-OUT Prinzip, deswegen muss die Liste umgedreht werden
             printf("Soll die Route als .txt gespeichert werden? (y/n) ");
             scanf("%c",&answer);
-            if(answer == 'y')
+            if(answer == 'y') // abfarge ob berechnete Route als .txt File gepeichert werden soll
             {
-                createtxt(headNewList);
+                createtxt(headNewList); // head der Liste zum erstellen einer .txt Datei übergeben
                 answer = 'x';
             }
 
@@ -844,6 +848,6 @@ int main()
         }
 
     }
-    free(head);
+    free(head); // head freigeben
     return 0;
 }
